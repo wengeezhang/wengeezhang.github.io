@@ -1,8 +1,8 @@
 self.addEventListener('push', function(event) {  
   console.log('Received a push message', event);
 
-  var title = 'Yay a message.';  
-  var body = 'We have received a push message.';  
+  var title = 'Hello';  
+  var body = 'This message is pushed by google\'s GCM';  
   var icon = 'https://simple-push-demo.appspot.com/images/touch/icon-128x128.png';  
   var tag = 'simple-push-demo-notification-tag';
 
