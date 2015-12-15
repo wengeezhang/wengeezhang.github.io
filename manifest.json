@@ -2,7 +2,7 @@
   "name": "Web Starter Kit",
   "short_name": "WSK",
   "icons": [{
-        "src": "https://simple-push-demo.appspot.com/images/touch/icon-128x128.png",
+        "src": "http://img1.sj.qq.com/res/static/myapp/assets/images/common/logo-yyb.png?1411873859465",
         "sizes": "128x128"
       }],
   "start_url": "/index.html",
