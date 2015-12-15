@@ -62,7 +62,7 @@
     navigator.serviceWorker.register('./service-worker.js');
     
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-        serviceWorkerRegistration.pushManager.subscribe().then(function(pushSubscription){
+        serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true}).then(function(pushSubscription){
                     document.querySelector("#subscriptionInfo").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription).subscriptionId;
                     document.querySelector("#endpointInfo").innerHTML=pushSubscription.endpoint;
                     document.querySelector("#curlCom").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription).curlCommand;
