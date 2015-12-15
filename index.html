@@ -45,7 +45,7 @@
 <p><a href="http://mustrank.com/blog/push_Notifi.html">Here:</a>中文：http://mustrank.com/blog/push_Notifi.html</p>
 </section>
 <script type="text/javascript">
-    navigator.serviceWorker.register('/service-worker.js');
+    navigator.serviceWorker.register('./service-worker.js');
     
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true}).then(function(pushSubscription){
