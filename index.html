@@ -48,7 +48,7 @@
     navigator.serviceWorker.register('./service-worker.js');
     
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
-        serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true}).then(function(pushSubscription){
+        serviceWorkerRegistration.pushManager.subscribe().then(function(pushSubscription){
                     document.querySelector("#subscriptionInfo").innerHTML=pushSubscription.subscriptionId;
                     document.querySelector("#endpointInfo").innerHTML=pushSubscription.endpoint;
                     document.querySelector("#curlCom").innerHTML='curl --header "Authorization: key=AIzaSyBozogm6yIwMxGzwBBk1SLvwwKCkuAzX50" --header Content-Type:"application/json" '+pushSubscription.endpoint+' -d "{\\"registration_ids\\":[\\"'+pushSubscription.subscriptionId+'\\"]}"';
