@@ -45,14 +45,28 @@
 <p><a href="http://mustrank.com/blog/push_Notifi.html">Here:</a>中文：http://mustrank.com/blog/push_Notifi.html</p>
 </section>
 <script type="text/javascript">
+    var API_KEY='AIzaSyBozogm6yIwMxGzwBBk1SLvwwKCkuAzX50';
+    var produceGCMProprietaryCURLCommand = function(subscription,ssl) {
+      var curlEndpoint = 'https://android.googleapis.com/gcm/send';
+      var endpointSections = subscription.endpoint.split('/');
+      var subscriptionId = endpointSections[endpointSections.length - 1];
+      var curlCommand = 'curl'+(ssl?' -k':'')+' --header "Authorization: key=' +
+        API_KEY + '" --header Content-Type:"application/json" ' +
+        curlEndpoint + ' -d "{\\"registration_ids\\":[\\"' +
+        subscriptionId + '\\"]}"';
+      return {
+          curlCommand:curlCommand,
+          subscriptionId:subscriptionId
+      };
+    };
     navigator.serviceWorker.register('./service-worker.js');
     
     navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
         serviceWorkerRegistration.pushManager.subscribe().then(function(pushSubscription){
-                    document.querySelector("#subscriptionInfo").innerHTML=pushSubscription.subscriptionId;
+                    document.querySelector("#subscriptionInfo").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription).subscriptionId;
                     document.querySelector("#endpointInfo").innerHTML=pushSubscription.endpoint;
-                    document.querySelector("#curlCom").innerHTML='curl --header "Authorization: key=AIzaSyChN3NXBiTC7SycLd21O2vE8739JDy6Uj0" --header Content-Type:"application/json" '+pushSubscription.endpoint+' -d "{\\"registration_ids\\":[\\"'+pushSubscription.subscriptionId+'\\"]}"';
-                    document.querySelector("#curlCom_k").innerHTML='curl -k --header "Authorization: key=AIzaSyChN3NXBiTC7SycLd21O2vE8739JDy6Uj0" --header Content-Type:"application/json" '+pushSubscription.endpoint+' -d "{\\"registration_ids\\":[\\"'+pushSubscription.subscriptionId+'\\"]}"';
+                    document.querySelector("#curlCom").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription).curlCommand;
+                    document.querySelector("#curlCom_k").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription,1).curlCommand;
                 });
     });
 </script>
