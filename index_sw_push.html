@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="manifest" href="/manifest.json">
+    <style>
+    section{
+        border:5px solid gray;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    </style>
+</head>
+<body>
+<h1>push Subscription Info</h1>
+<section>
+    <h2>subscriptionId</h2>
+    <p id="subscriptionInfo"></p>
+    <h2>endpoint</h2>
+    <p id="endpointInfo"></p>
+
+</section>
+<h1>trigger push</h1>
+<section>
+    <h2>use curl command below</h2>
+    <p id="curlCom"></p>
+    <h2>If there's "SSL certificate problem",try to add "-k" in the curl command.</h2>
+    <p id="curlCom_k"></p>
+</section>
+<h1>source code</h1>
+<section>
+<h2>
+<a href="https://github.com/wengeezhang/wengeezhang.github.io">Here</a>:https://github.com/wengeezhang/wengeezhang.github.io</h2>
+</section>
+<h1>Further reading</h1>
+<section>
+<h2>Thanks to <a href="http://updates.html5rocks.com/2015/03/push-notificatons-on-the-open-web">Matt Gaunt</a></h2>
+<ul>
+    <li><a href="http://www.html5rocks.com/en/tutorials/service-worker/introduction/">http://www.html5rocks.com/en/tutorials/service-worker/introduction/</a></li>
+    <li><a href="http://updates.html5rocks.com/2015/03/push-notificatons-on-the-open-web">http://updates.html5rocks.com/2015/03/push-notificatons-on-the-open-web</a></li>
+    <li><a href="https://gauntface.com/blog/2014/12/15/push-notifications-service-worker">https://gauntface.com/blog/2014/12/15/push-notifications-service-worker</a></li>
+</ul>
+<h2>Chinese readers</h2>
+<p><a href="http://mustrank.com/blog/push_Notifi.html">Here:</a>中文：http://wengeezhang.com/?p=15</p>
+</section>
+<script type="text/javascript">
+    var API_KEY='AIzaSyCP1gOfuVeDOqNjf0eCigb0-YJydeISYxk';
+    var produceGCMProprietaryCURLCommand = function(subscription,ssl) {
+      var curlEndpoint = 'https://android.googleapis.com/gcm/send';
+      var endpointSections = subscription.endpoint.split('/');
+      var subscriptionId = endpointSections[endpointSections.length - 1];
+      var curlCommand = 'curl'+(ssl?' -k':'')+' --header "Authorization: key=' +
+        API_KEY + '" --header Content-Type:"application/json" ' +
+        curlEndpoint + ' -d "{\\"registration_ids\\":[\\"' +
+        subscriptionId + '\\"]}"';
+      return {
+          curlCommand:curlCommand,
+          subscriptionId:subscriptionId
+      };
+    };
+    navigator.serviceWorker.register('./service-worker.js');
+    
+    navigator.serviceWorker.ready.then(function(serviceWorkerRegistration) {
+        serviceWorkerRegistration.pushManager.subscribe({userVisibleOnly: true}).then(function(pushSubscription){
+                    document.querySelector("#subscriptionInfo").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription).subscriptionId;
+                    document.querySelector("#endpointInfo").innerHTML=pushSubscription.endpoint;
+                    document.querySelector("#curlCom").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription).curlCommand;
+                    document.querySelector("#curlCom_k").innerHTML=produceGCMProprietaryCURLCommand(pushSubscription,1).curlCommand;
+                });
+    });
+</script>
+</body>
+</html>
