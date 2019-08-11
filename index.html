@@ -28,9 +28,14 @@
 </head>
 <body>
     <div class="row mr8">
-      <div class="col-lg-3">
+      <div class="col-sm-2">
         <div class="input-group">
           <input type="text" class="form-control" id='keytxt' placeholder="输入产品名称...">
+        </div>
+      </div>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" class="form-control" id='keymanu' placeholder="输入厂家名称...">
           <span class="input-group-btn">
             <button class="btn btn-default" id='search' type="button">查询!</button>
           </span>
@@ -67,20 +72,29 @@ let xlsxArr = [
 ];
 window.searchRes = [];
 document.querySelector('#search').addEventListener('click', ()=> {
+    alert('开始查询');
     searchRes = [];
     let keytxt = document.querySelector('#keytxt').value;
+    let manutxt = document.querySelector('#keymanu').value;
+    alert(`关键字：${keytxt}-${manutxt}`);
     xlsxArr.forEach((one, index) => {
         let manufacturer = one.replace(/\.xlsx/,'');
         let sheets = window['manufacturer' + index];
+        alert(`sheets：${manufacturer} ${sheets}`);
         sheets.forEach(sheet => {
+
             let rows = sheet.data;
             let defineRow = rows[0];
             let nameIndex = defineRow.findIndex(one => one === '商品');
             let originPriceIndex = defineRow.findIndex(one => one === '定价');
             let discountPriceIndex = defineRow.findIndex(one => one === '代理价');
             let attachIndex = defineRow.findIndex(one => one === '备注');
-
-            let targetRows = rows.filter(row => row[nameIndex] && row[nameIndex].includes(keytxt));
+            //alert(`rows: ${defineRow}`);
+            let targetRows = manutxt ? rows.filter(row => {
+                return row[nameIndex] && row[nameIndex].includes(keytxt) && manufacturer.includes(manutxt);
+            }) : rows.filter(row => {
+                return row[nameIndex] && row[nameIndex].includes(keytxt);
+            });
             let amends = targetRows.map(one => ({
                 manufacturer,
                 name: one[nameIndex],
@@ -91,6 +105,7 @@ document.querySelector('#search').addEventListener('click', ()=> {
             searchRes = searchRes.concat(amends);
         });
     });
+    alert(`searchRes: ${searchRes}`);
     // 渲染表格
     let tbody = ``;
     searchRes.forEach(row => {
@@ -102,6 +117,7 @@ document.querySelector('#search').addEventListener('click', ()=> {
             <td>${row.attach || '暂无'}</td>
             </tr>`
     });
+    alert(`tbody: ${tbody}`);
     document.querySelector('#tbody').innerHTML = tbody;
 })
 
