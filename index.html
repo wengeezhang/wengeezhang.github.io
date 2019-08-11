@@ -92,10 +92,15 @@ document.querySelector('#search').addEventListener('click', ()=> {
             let discountPriceIndex = defineRow.findIndex(one => one === '代理价');
             let attachIndex = defineRow.findIndex(one => one === '备注');
             //alert(`rows: ${defineRow}`);
-            let targetRows = manutxt ? rows.filter(row => {
+            /*let targetRows = manutxt ? rows.filter(row => {
                 return row[nameIndex] && row[nameIndex].includes(keytxt) && manufacturer.includes(manutxt);
             }) : rows.filter(row => {
                 return row[nameIndex] && row[nameIndex].includes(keytxt);
+            });*/
+            let targetRows = (keytxt && manutxt) ? rows.filter(row => {
+                return (keytxt && row[nameIndex] && row[nameIndex].includes(keytxt)) && manufacturer.includes(manutxt);
+            }) : rows.filter(row => {
+                return (keytxt && row[nameIndex] && row[nameIndex].includes(keytxt)) || (manutxt && manufacturer.includes(manutxt));
             });
             let amends = targetRows.map(one => ({
                 manufacturer,

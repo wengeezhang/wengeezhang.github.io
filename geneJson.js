@@ -1,0 +1,1 @@
+ files.forEach((filename, index) => {const buffer = xlsx.parse(fs.readFileSync('./xlsx/'+filename));fs.writeFileSync(`./json/${filename.replace(/\.xlsx/g,'')}.js`, `window.manufacturer${index} = ` + JSON.stringify(buffer))})
