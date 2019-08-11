@@ -73,14 +73,24 @@ let xlsxArr = [
   '盖世童书-点读书报价单S.xlsx'
 ];
 window.searchRes = [];
+setTimeout(() => {
+    alert(typeof window['manufacturer0']);
+    alert(typeof window['manufacturer1']);
+    alert(typeof window['manufacturer2']);
+    alert(typeof window['manufacturer3']);
+    alert(typeof window['manufacturer4']);
+    alert(typeof window['manufacturer5']);
+    alert(typeof window['manufacturer6']);
+}, 20000);
 document.querySelector('#search').addEventListener('click', ()=> {
-    alert('开始查询');
+    //alert('开始查询');
     searchRes = [];
     let keytxt = document.querySelector('#keytxt').value;
     let manutxt = document.querySelector('#keymanu').value;
-    alert(`关键字：${keytxt}-${manutxt}`);
+    //alert(`关键字：${keytxt}-${manutxt}`);
     xlsxArr.forEach((one, index) => {
         let manufacturer = one.replace(/\.xlsx/,'');
+        alert('index' + index);
         let sheets = window['manufacturer' + index];
         alert(`sheets：${manufacturer} ${sheets}`);
         sheets.forEach(sheet => {
