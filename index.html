@@ -49,8 +49,8 @@
           <caption>查询结果：</caption>
           <thead>
             <tr>
+              <th>商品</th>
               <th>厂家</th>
-              <th>名称</th>
               <th>定价</th>
               <th>代理价</th>
               <th>备注</th>
@@ -117,8 +117,8 @@ document.querySelector('#search').addEventListener('click', ()=> {
     let tbody = ``;
     searchRes.forEach(row => {
         tbody += `<tr>
-            <td>${row.manufacturer}</td>
             <td>${row.name}</td>
+            <td>${row.manufacturer}</td>
             <td>${row.originPrice || '暂无'}</td>
             <td>${row.discountPrice || '暂无'}</td>
             <td>${row.attach || '暂无'}</td>
