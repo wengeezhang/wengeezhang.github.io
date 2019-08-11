@@ -14,9 +14,9 @@
 
 <script type="text/javascript" src="./json/大卫星标raz报价-0807.js"></script>
 
-<script type="text/javascript" src="./json/小达人厂家-最新书单 7-29.js"></script>
+<script type="text/javascript" src="./json/小达人厂家-最新书单7-29.js"></script>
 <script type="text/javascript" src="./json/小达人官营店-一件代发书单2019.4.12.js"></script>
-<script type="text/javascript" src="./json/廖上+随身听厂家- 报价表.js"></script>
+<script type="text/javascript" src="./json/廖上+随身听厂家-报价表.js"></script>
 <script type="text/javascript" src="./json/盖世出版-价格表(3).js"></script>
 <script type="text/javascript" src="./json/盖世童书-点读书报价单S.js"></script>
 
@@ -24,21 +24,23 @@
     .mr8{
         margin: 8px;
     }
+    .customInput{
+        padding: 5px;
+        margin-right: 5px;
+    }
+    button{
+        background-color: green;
+    }
     </style>
 </head>
 <body>
     <div class="row mr8">
-      <div class="col-sm-2">
+      <div class="col-lg-6">
         <div class="input-group">
-          <input type="text" class="form-control" id='keytxt' placeholder="输入产品名称...">
-        </div>
-      </div>
-      <div class="col-sm-3">
-        <div class="input-group">
-          <input type="text" class="form-control" id='keymanu' placeholder="输入厂家名称...">
-          <span class="input-group-btn">
-            <button class="btn btn-default" id='search' type="button">查询!</button>
-          </span>
+          <input type="text" class="customInput" id='keytxt' placeholder="输入产品名称...">
+          <input type="text" class="customInput" id='keymanu' placeholder="输入厂家名称...">
+
+            <button class="btn btn-default" id='search' type="button">查询</button>
         </div>
       </div>
     </div>
