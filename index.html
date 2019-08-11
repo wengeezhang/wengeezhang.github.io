@@ -9,8 +9,17 @@
 <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
-<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="./json/A娟报价-2019-07-03.js"></script>
+
+<script type="text/javascript" src="./json/大卫星标raz报价-0807.js"></script>
+
+<script type="text/javascript" src="./json/小达人厂家-最新书单 7-29.js"></script>
+<script type="text/javascript" src="./json/小达人官营店-一件代发书单2019.4.12.js"></script>
+<script type="text/javascript" src="./json/廖上+随身听厂家- 报价表.js"></script>
+<script type="text/javascript" src="./json/盖世出版-价格表(3).js"></script>
+<script type="text/javascript" src="./json/盖世童书-点读书报价单S.js"></script>
+
     <style>
     .mr8{
         margin: 8px;
@@ -21,9 +30,9 @@
     <div class="row mr8">
       <div class="col-lg-3">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="输入产品名称...">
+          <input type="text" class="form-control" id='keytxt' placeholder="输入产品名称...">
           <span class="input-group-btn">
-            <button class="btn btn-default" type="button">查询!</button>
+            <button class="btn btn-default" id='search' type="button">查询!</button>
           </span>
         </div>
       </div>
@@ -33,32 +42,69 @@
           <caption>查询结果：</caption>
           <thead>
             <tr>
+              <th>厂家</th>
               <th>名称</th>
-              <th>城市</th>
-              <th>邮编</th>
+              <th>定价</th>
+              <th>代理价</th>
+              <th>备注</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Tanmay</td>
-              <td>Bangalore</td>
-              <td>560001</td>
-            </tr>
-            <tr>
-              <td>Sachin</td>
-              <td>Mumbai</td>
-              <td>400003</td>
-            </tr>
-            <tr>
-              <td>Uma</td>
-              <td>Pune</td>
-              <td>411027</td>
-            </tr>
+          <tbody id='tbody'>
+            
           </tbody>
         </table>
     </div>
 
 <script type="text/javascript">
+let xlsxArr = [
+  'A娟报价-2019-07-03.xlsx',
+  '大卫星标raz报价-0807.xlsx',
+  '小达人厂家-最新书单 7-29.xlsx',
+  '小达人官营店-一件代发书单2019.4.12.xlsx',
+  '廖上+随身听厂家- 报价表.xlsx',
+  '盖世出版-价格表(3).xlsx',
+  '盖世童书-点读书报价单S.xlsx'
+];
+window.searchRes = [];
+document.querySelector('#search').addEventListener('click', ()=> {
+    searchRes = [];
+    let keytxt = document.querySelector('#keytxt').value;
+    xlsxArr.forEach((one, index) => {
+        let manufacturer = one.replace(/\.xlsx/,'');
+        let sheets = window['manufacturer' + index];
+        sheets.forEach(sheet => {
+            let rows = sheet.data;
+            let defineRow = rows[0];
+            let nameIndex = defineRow.findIndex(one => one === '商品');
+            let originPriceIndex = defineRow.findIndex(one => one === '定价');
+            let discountPriceIndex = defineRow.findIndex(one => one === '代理价');
+            let attachIndex = defineRow.findIndex(one => one === '备注');
+
+            let targetRows = rows.filter(row => row[nameIndex] && row[nameIndex].includes(keytxt));
+            let amends = targetRows.map(one => ({
+                manufacturer,
+                name: one[nameIndex],
+                originPrice: one[originPriceIndex],
+                discountPrice: one[discountPriceIndex],
+                attach: one[attachIndex]
+            }));
+            searchRes = searchRes.concat(amends);
+        });
+    });
+    // 渲染表格
+    let tbody = ``;
+    searchRes.forEach(row => {
+        tbody += `<tr>
+            <td>${row.manufacturer}</td>
+            <td>${row.name}</td>
+            <td>${row.originPrice || '暂无'}</td>
+            <td>${row.discountPrice || '暂无'}</td>
+            <td>${row.attach || '暂无'}</td>
+            </tr>`
+    });
+    document.querySelector('#tbody').innerHTML = tbody;
+})
+
 </script>
 </body>
 </html>
