@@ -82,7 +82,7 @@ document.querySelector('#search').addEventListener('click', ()=> {
     xlsxArr.forEach((one, index) => {
         let manufacturer = one.replace(/\.xlsx/,'');
         let sheets = window['manufacturer' + index];
-        alert(`sheets：${manufacturer} ${sheets}`);
+        //alert(`sheets：${manufacturer} ${sheets}`);
         sheets.forEach(sheet => {
 
             let rows = sheet.data;
@@ -107,7 +107,7 @@ document.querySelector('#search').addEventListener('click', ()=> {
             searchRes = searchRes.concat(amends);
         });
     });
-    alert(`searchRes: ${searchRes}`);
+    //alert(`searchRes: ${searchRes}`);
     // 渲染表格
     let tbody = ``;
     searchRes.forEach(row => {
@@ -119,7 +119,7 @@ document.querySelector('#search').addEventListener('click', ()=> {
             <td>${row.attach || '暂无'}</td>
             </tr>`
     });
-    alert(`tbody: ${tbody}`);
+    //alert(`tbody: ${tbody}`);
     document.querySelector('#tbody').innerHTML = tbody;
 })
 
