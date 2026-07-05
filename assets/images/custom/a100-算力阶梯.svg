@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 400" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect x="0" y="0" width="860" height="400" fill="#ffffff"/>
+  <text x="430" y="34" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2937">A100 的算力阶梯：Tensor Core 是 CUDA Core 的 8~32 倍</text>
+
+  <!-- 基线 -->
+  <line x1="80" y1="330" x2="800" y2="330" stroke="#94a3b8" stroke-width="2"/>
+
+  <!-- 柱状: 高度按对数比例示意，标注真实数值。max 高度 250 -->
+  <!-- FP32: 19.5 -->
+  <rect x="110" y="290" width="110" height="40" rx="4" fill="#cbd5e1" stroke="#64748b" stroke-width="2"/>
+  <text x="165" y="278" text-anchor="middle" font-size="14" font-weight="bold" fill="#334155">19.5 TFLOPS</text>
+  <text x="165" y="352" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">FP32</text>
+  <text x="165" y="370" text-anchor="middle" font-size="11.5" fill="#64748b">CUDA Core</text>
+
+  <!-- TF32: 156 (8x) -->
+  <rect x="280" y="190" width="110" height="140" rx="4" fill="#fecaca" stroke="#ef4444" stroke-width="2"/>
+  <text x="335" y="178" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">156 TFLOPS</text>
+  <text x="335" y="215" text-anchor="middle" font-size="12" fill="#7f1d1d">× 8</text>
+  <text x="335" y="352" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">TF32</text>
+  <text x="335" y="370" text-anchor="middle" font-size="11.5" fill="#64748b">Tensor Core</text>
+
+  <!-- BF16/FP16: 312 (16x) -->
+  <rect x="450" y="130" width="110" height="200" rx="4" fill="#fca5a5" stroke="#ef4444" stroke-width="2"/>
+  <text x="505" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">312 TFLOPS</text>
+  <text x="505" y="160" text-anchor="middle" font-size="12" fill="#7f1d1d">× 16</text>
+  <text x="505" y="352" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">BF16 / FP16</text>
+  <text x="505" y="370" text-anchor="middle" font-size="11.5" fill="#64748b">Tensor Core</text>
+
+  <!-- INT8: 624 (32x) -->
+  <rect x="620" y="70" width="110" height="260" rx="4" fill="#f87171" stroke="#dc2626" stroke-width="2"/>
+  <text x="675" y="58" text-anchor="middle" font-size="14" font-weight="bold" fill="#b91c1c">624 TOPS</text>
+  <text x="675" y="100" text-anchor="middle" font-size="12" fill="#7f1d1d">× 32</text>
+  <text x="675" y="352" text-anchor="middle" font-size="13" font-weight="bold" fill="#334155">INT8</text>
+  <text x="675" y="370" text-anchor="middle" font-size="11.5" fill="#64748b">Tensor Core</text>
+
+  <text x="430" y="394" text-anchor="middle" font-size="12.5" fill="#64748b">矩阵乘没跑在 Tensor Core 上 = "把法拉利当自行车骑"（柱高为示意，非线性比例）</text>
+</svg>

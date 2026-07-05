@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 255" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img">
+<title>DP/TP/PP 切分对象对比</title>
+<rect x="0" y="0" width="680" height="255" fill="#ffffff"/>
+
+<rect x="20" y="15" width="203" height="200" rx="8" fill="#F1EFE8"/>
+<rect x="238" y="15" width="203" height="200" rx="8" fill="#F1EFE8"/>
+<rect x="456" y="15" width="203" height="200" rx="8" fill="#F1EFE8"/>
+
+<text x="121" y="40" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">DP 数据并行</text>
+<text x="339" y="40" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">TP 张量并行</text>
+<text x="557" y="40" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">PP 流水线并行</text>
+
+<text x="68" y="62" text-anchor="middle" font-size="12" fill="#5F5E5A">GPU 0</text>
+<text x="176" y="62" text-anchor="middle" font-size="12" fill="#5F5E5A">GPU 1</text>
+<g fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"><rect x="42" y="70" width="52" height="22" rx="3"/><rect x="42" y="96" width="52" height="22" rx="3"/><rect x="42" y="122" width="52" height="22" rx="3"/><rect x="42" y="148" width="52" height="22" rx="3"/></g>
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"><rect x="150" y="70" width="52" height="22" rx="3"/><rect x="150" y="96" width="52" height="22" rx="3"/><rect x="150" y="122" width="52" height="22" rx="3"/><rect x="150" y="148" width="52" height="22" rx="3"/></g>
+<text x="121" y="205" text-anchor="middle" font-size="12" fill="#5F5E5A">各存完整模型 · 切 batch</text>
+
+<g fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"><rect x="276" y="70" width="63" height="22" rx="3"/><rect x="276" y="96" width="63" height="22" rx="3"/><rect x="276" y="122" width="63" height="22" rx="3"/><rect x="276" y="148" width="63" height="22" rx="3"/></g>
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"><rect x="339" y="70" width="63" height="22" rx="3"/><rect x="339" y="96" width="63" height="22" rx="3"/><rect x="339" y="122" width="63" height="22" rx="3"/><rect x="339" y="148" width="63" height="22" rx="3"/></g>
+<text x="339" y="205" text-anchor="middle" font-size="12" fill="#5F5E5A">每层切开 · 两卡各算一半</text>
+
+<g fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"><rect x="492" y="70" width="128" height="22" rx="3"/><rect x="492" y="96" width="128" height="22" rx="3"/></g>
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"><rect x="492" y="122" width="128" height="22" rx="3"/><rect x="492" y="148" width="128" height="22" rx="3"/></g>
+<text x="557" y="205" text-anchor="middle" font-size="12" fill="#5F5E5A">按层分段 · 一卡几层</text>
+
+<rect x="250" y="226" width="14" height="14" rx="3" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text x="270" y="237" font-size="12" fill="#5F5E5A">GPU 0</text>
+<rect x="360" y="226" width="14" height="14" rx="3" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="380" y="237" font-size="12" fill="#5F5E5A">GPU 1</text>
+</svg>

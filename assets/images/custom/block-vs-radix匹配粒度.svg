@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 360" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect x="0" y="0" width="880" height="360" fill="#ffffff"/>
+  <text x="440" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2937">前缀匹配粒度：vLLM APC（按 block）vs SGLang（按 token）</text>
+  <text x="440" y="58" text-anchor="middle" font-size="13" fill="#64748b">例：新请求与缓存的公共前缀长 21 个 token，block 大小 = 16</text>
+
+  <!-- vLLM row -->
+  <text x="60" y="110" font-size="14" font-weight="bold" fill="#1d4ed8">vLLM APC</text>
+  <text x="60" y="130" font-size="11.5" fill="#64748b">block hash 匹配</text>
+  <!-- block1: 16 tokens hit -->
+  <g>
+    <rect x="200" y="90" width="320" height="46" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="360" y="110" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#047857">Block 0（token 1~16）✓ 命中</text>
+    <text x="360" y="128" text-anchor="middle" font-size="11.5" fill="#065f46">整块 hash 完全一致，可复用</text>
+    <rect x="524" y="90" width="320" height="46" rx="6" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+    <text x="684" y="110" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#b91c1c">Block 1（token 17~32）✗ 未命中</text>
+    <text x="684" y="128" text-anchor="middle" font-size="11.5" fill="#7f1d1d">块未填满/后半不同 → 前缀 17~21 白算</text>
+  </g>
+  <text x="440" y="162" text-anchor="middle" font-size="12" fill="#64748b">实际复用 16 个 token（必须按 block 对齐才能命中）</text>
+
+  <!-- SGLang row -->
+  <text x="60" y="230" font-size="14" font-weight="bold" fill="#92400e">SGLang</text>
+  <text x="60" y="250" font-size="11.5" fill="#64748b">radix tree 最长公共前缀</text>
+  <g>
+    <rect x="200" y="210" width="420" height="46" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="410" y="230" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#047857">token 1~21 全部命中 ✓</text>
+    <text x="410" y="248" text-anchor="middle" font-size="11.5" fill="#065f46">树上走到哪算哪，不需要对齐</text>
+    <rect x="624" y="210" width="220" height="46" rx="6" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,4"/>
+    <text x="734" y="238" text-anchor="middle" font-size="12" fill="#64748b">token 22 起：新分支</text>
+  </g>
+  <text x="440" y="282" text-anchor="middle" font-size="12" fill="#64748b">实际复用 21 个 token（任意前缀长度都能命中）</text>
+
+  <rect x="120" y="304" width="640" height="42" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="440" y="330" text-anchor="middle" font-size="12.5" fill="#9a3412">GRPO 的"同 prompt 多 completion"两者都能命中；差距主要在 kernel 细节与匹配粒度</text>
+</svg>

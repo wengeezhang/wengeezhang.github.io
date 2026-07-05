@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 275" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img">
+<title>DDP 复制 vs FSDP 分片</title>
+<rect x="0" y="0" width="680" height="275" fill="#ffffff"/>
+
+<text x="40" y="42" font-size="14" font-weight="500" fill="#2C2C2A">DDP — 完整复制</text>
+<rect x="180" y="50" width="140" height="75" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="186" y="56" width="128" height="63" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<rect x="330" y="50" width="140" height="75" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="336" y="56" width="128" height="63" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<rect x="480" y="50" width="140" height="75" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="486" y="56" width="128" height="63" rx="4" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text x="40" y="143" font-size="12" fill="#5F5E5A">每卡一份完整模型状态 → 3 份冗余（蓝=占满）</text>
+
+<text x="40" y="172" font-size="14" font-weight="500" fill="#2C2C2A">FSDP / ZeRO-3 — 分片</text>
+<rect x="180" y="180" width="140" height="75" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="186" y="228" width="128" height="21" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<rect x="330" y="180" width="140" height="75" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="336" y="228" width="128" height="21" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<rect x="480" y="180" width="140" height="75" rx="6" fill="#F1EFE8" stroke="#B4B2A9" stroke-width="0.8"/>
+<rect x="486" y="228" width="128" height="21" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="40" y="272" font-size="12" fill="#5F5E5A">每卡只存 1/N，用到时 all-gather 临时拼出整层，算完即弃</text>
+</svg>

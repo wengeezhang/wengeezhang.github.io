@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 470" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect x="0" y="0" width="880" height="470" fill="#ffffff"/>
+  <text x="440" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2937">"省存储所以快"是不完整的因果链：四个独立加速机制</text>
+
+  <!-- 误解 -->
+  <rect x="200" y="54" width="480" height="40" rx="8" fill="#fef2f2" stroke="#ef4444" stroke-width="2" stroke-dasharray="7,4"/>
+  <text x="440" y="80" text-anchor="middle" font-size="13" fill="#b91c1c">✗ 误解：共享 prefix → 省存储 → 更快（单一因果链）</text>
+
+  <!-- 中心 -->
+  <rect x="290" y="120" width="300" height="52" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="440" y="152" text-anchor="middle" font-size="15" font-weight="bold" fill="#92400e">RadixAttention 共享 prefix</text>
+
+  <!-- arrows -->
+  <g stroke="#f59e0b" stroke-width="2">
+    <line x1="330" y1="172" x2="150" y2="220"/>
+    <line x1="400" y1="172" x2="345" y2="220"/>
+    <line x1="480" y1="172" x2="535" y2="220"/>
+    <line x1="550" y1="172" x2="730" y2="220"/>
+  </g>
+
+  <!-- 机制 1 -->
+  <rect x="40" y="220" width="200" height="130" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="140" y="246" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#047857">① 跳过重复 prefill</text>
+  <text x="140" y="270" text-anchor="middle" font-size="12" fill="#065f46">计算节省（少干活）</text>
+  <text x="140" y="292" text-anchor="middle" font-size="12" fill="#065f46">GRPO 例：省 7×500 token</text>
+  <text x="140" y="312" text-anchor="middle" font-size="12" fill="#065f46">≈ 总计算 21%</text>
+  <text x="140" y="336" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#b45309">与省存储无关</text>
+
+  <!-- 机制 2 -->
+  <rect x="252" y="220" width="200" height="130" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="352" y="246" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#047857">② HBM 读取摊销</text>
+  <text x="352" y="270" text-anchor="middle" font-size="12" fill="#065f46">带宽节省（少搬数据）</text>
+  <text x="352" y="292" text-anchor="middle" font-size="12" fill="#065f46">共享 KV 一次读取供多</text>
+  <text x="352" y="312" text-anchor="middle" font-size="12" fill="#065f46">query 复用，~5-10%</text>
+  <text x="352" y="336" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#b45309">需共享前缀 kernel 支持</text>
+
+  <!-- 机制 3 -->
+  <rect x="464" y="220" width="200" height="130" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+  <text x="564" y="246" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1d4ed8">③ 更大 batch</text>
+  <text x="564" y="270" text-anchor="middle" font-size="12" fill="#1e40af">存储节省 → 吞吐提升</text>
+  <text x="564" y="292" text-anchor="middle" font-size="12" fill="#1e40af">60GB 预算：并发 46 条</text>
+  <text x="564" y="312" text-anchor="middle" font-size="12" fill="#1e40af">→ 60 条，吞吐 +30%</text>
+  <text x="564" y="336" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#1d4ed8">"省存储"走的是这条路</text>
+
+  <!-- 机制 4 -->
+  <rect x="676" y="220" width="164" height="130" rx="8" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="758" y="246" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#6d28d9">④ L2 命中率</text>
+  <text x="758" y="270" text-anchor="middle" font-size="12" fill="#5b21b6">working set 变小</text>
+  <text x="758" y="292" text-anchor="middle" font-size="12" fill="#5b21b6">共享 KV 易驻留 L2</text>
+  <text x="758" y="312" text-anchor="middle" font-size="12" fill="#5b21b6">收益约 5%</text>
+  <text x="758" y="336" text-anchor="middle" font-size="11.5" font-weight="bold" fill="#6d28d9">间接相关</text>
+
+  <!-- 汇总 -->
+  <rect x="190" y="382" width="500" height="52" rx="10" fill="#fff7ed" stroke="#f97316" stroke-width="2.5"/>
+  <text x="440" y="405" text-anchor="middle" font-size="14" font-weight="bold" fill="#9a3412">合计 ≈ 1.5 ~ 2×（vs vLLM 不开 prefix cache，GRPO num_gen=8）</text>
+  <text x="440" y="425" text-anchor="middle" font-size="12" fill="#b45309">前提：decode 是 memory-bandwidth bound，减少 HBM 读取量本身就是加速</text>
+</svg>

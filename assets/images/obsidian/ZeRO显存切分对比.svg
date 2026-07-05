@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 475" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img">
+<title>ZeRO 显存切分对比图</title>
+<rect x="0" y="0" width="680" height="475" fill="#ffffff"/>
+
+<text x="55" y="28" font-size="12" fill="#5F5E5A">示例：8 张 GPU，模型约 8B 参数（每卡显存）</text>
+
+<rect x="70" y="140" width="100" height="240" rx="3" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<rect x="70" y="100" width="100" height="40" rx="3" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<rect x="70" y="60" width="100" height="40" rx="3" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="120" y="52" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">128 GB</text>
+
+<rect x="225" y="350" width="100" height="30" rx="3" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<rect x="225" y="310" width="100" height="40" rx="3" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<rect x="225" y="270" width="100" height="40" rx="3" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="275" y="262" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">44 GB</text>
+
+<rect x="380" y="350" width="100" height="30" rx="3" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<rect x="380" y="345" width="100" height="5" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<rect x="380" y="305" width="100" height="40" rx="3" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="430" y="297" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">30 GB</text>
+
+<rect x="535" y="350" width="100" height="30" rx="3" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<rect x="535" y="345" width="100" height="5" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<rect x="535" y="340" width="100" height="5" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="585" y="332" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">16 GB</text>
+
+<line x1="55" y1="380" x2="650" y2="380" stroke="#888780" stroke-width="0.5"/>
+
+<text x="120" y="400" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">DDP 基线</text>
+<text x="120" y="419" text-anchor="middle" font-size="12" fill="#5F5E5A">每卡存全部</text>
+<text x="275" y="400" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">ZeRO-1</text>
+<text x="275" y="419" text-anchor="middle" font-size="12" fill="#5F5E5A">切分优化器</text>
+<text x="430" y="400" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">ZeRO-2</text>
+<text x="430" y="419" text-anchor="middle" font-size="12" fill="#5F5E5A">+ 切分梯度</text>
+<text x="585" y="400" text-anchor="middle" font-size="14" font-weight="500" fill="#2C2C2A">ZeRO-3</text>
+<text x="585" y="419" text-anchor="middle" font-size="12" fill="#5F5E5A">+ 切分参数</text>
+
+<rect x="95" y="443" width="14" height="14" rx="3" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.8"/>
+<text x="114" y="454" font-size="12" fill="#5F5E5A">参数 16</text>
+<rect x="200" y="443" width="14" height="14" rx="3" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text x="219" y="454" font-size="12" fill="#5F5E5A">梯度 16</text>
+<rect x="305" y="443" width="14" height="14" rx="3" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text x="324" y="454" font-size="12" fill="#5F5E5A">优化器 96（含 fp32 主权重副本）</text>
+</svg>

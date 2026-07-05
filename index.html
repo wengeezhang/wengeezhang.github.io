@@ -1,133 +1,45 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>价格查询工具</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-<!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-
-
-<script type="text/javascript" src="./json/A娟报价-2019-07-03.js"></script>
-
-<script type="text/javascript" src="./json/大卫星标raz报价-0807.js"></script>
-
-<script type="text/javascript" src="./json/小达人厂家-最新书单7-29.js"></script>
-<script type="text/javascript" src="./json/小达人官营店-一件代发书单2019.4.12.js"></script>
-<script type="text/javascript" src="./json/廖上+随身听厂家-报价表.js"></script>
-<script type="text/javascript" src="./json/盖世出版-价格表(3).js"></script>
-<script type="text/javascript" src="./json/盖世童书-点读书报价单S.js"></script>
-
-    <style>
-    .mr8{
-        margin: 8px;
-    }
-    .customInput{
-        padding: 5px;
-        margin-right: 5px;
-    }
-    button{
-        background-color: green;
-    }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM 修炼手册 · 从零到后训练实战</title>
+<link rel="stylesheet" href="assets/vendor/katex/katex.min.css">
+<link rel="stylesheet" href="assets/vendor/hljs/github.min.css" id="hljs-light">
+<link rel="stylesheet" href="assets/vendor/hljs/github-dark.min.css" id="hljs-dark" disabled>
+<link rel="stylesheet" href="assets/css/site.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
 </head>
 <body>
-    <div class="row mr8">
-      <div class="col-lg-6">
-        <div class="input-group">
-          <input type="text" class="customInput" id='keytxt' placeholder="输入产品名称...">
-          <input type="text" class="customInput" id='keymanu' placeholder="输入厂家名称...">
-
-            <button class="btn btn-default" id='search' type="button">查询</button>
-        </div>
-      </div>
+<div id="progressbar"></div>
+<header id="topbar">
+  <button id="nav-toggle" title="目录" aria-label="切换目录">☰</button>
+  <a class="brand" href="#/">🧠 <span class="brand-title">LLM 修炼手册</span><span class="brand-sub">从零到后训练实战</span></a>
+  <div class="topbar-right">
+    <div id="search-wrap">
+      <input id="search-input" type="search" placeholder="搜索全站内容…  (按 / 聚焦)" autocomplete="off">
+      <div id="search-results" hidden></div>
     </div>
-    <div class="row mr8">
-        <table class="table table-striped">
-          <caption>查询结果：</caption>
-          <thead>
-            <tr>
-              <th>商品</th>
-              <th>厂家</th>
-              <th>定价</th>
-              <th>代理价</th>
-              <th>备注</th>
-            </tr>
-          </thead>
-          <tbody id='tbody'>
-            
-          </tbody>
-        </table>
-    </div>
-
-<script type="text/javascript">
-let xlsxArr = [
-  'A娟报价-2019-07-03.xlsx',
-  '大卫星标raz报价-0807.xlsx',
-  '小达人厂家-最新书单7-29.xlsx',
-  '小达人官营店-一件代发书单2019.4.12.xlsx',
-  '廖上+随身听厂家-报价表.xlsx',
-  '盖世出版-价格表(3).xlsx',
-  '盖世童书-点读书报价单S.xlsx'
-];
-window.searchRes = [];
-document.querySelector('#search').addEventListener('click', ()=> {
-    //alert('开始查询');
-    searchRes = [];
-    let keytxt = document.querySelector('#keytxt').value;
-    let manutxt = document.querySelector('#keymanu').value;
-    //alert(`关键字：${keytxt}-${manutxt}`);
-    xlsxArr.forEach((one, index) => {
-        let manufacturer = one.replace(/\.xlsx/,'');
-        let sheets = window['manufacturer' + index];
-        //alert(`sheets：${manufacturer} ${sheets}`);
-        sheets.forEach(sheet => {
-
-            let rows = sheet.data;
-            let defineRow = rows[0];
-            let nameIndex = defineRow.findIndex(one => one === '商品');
-            let originPriceIndex = defineRow.findIndex(one => one === '定价');
-            let discountPriceIndex = defineRow.findIndex(one => one === '代理价');
-            let attachIndex = defineRow.findIndex(one => one === '备注');
-            //alert(`rows: ${defineRow}`);
-            /*let targetRows = manutxt ? rows.filter(row => {
-                return row[nameIndex] && row[nameIndex].includes(keytxt) && manufacturer.includes(manutxt);
-            }) : rows.filter(row => {
-                return row[nameIndex] && row[nameIndex].includes(keytxt);
-            });*/
-            let targetRows = (keytxt && manutxt) ? rows.filter(row => {
-                return (keytxt && row[nameIndex] && row[nameIndex].includes(keytxt)) && manufacturer.includes(manutxt);
-            }) : rows.filter(row => {
-                return (keytxt && row[nameIndex] && row[nameIndex].includes(keytxt)) || (manutxt && manufacturer.includes(manutxt));
-            });
-            let amends = targetRows.map(one => ({
-                manufacturer,
-                name: one[nameIndex],
-                originPrice: one[originPriceIndex],
-                discountPrice: one[discountPriceIndex],
-                attach: one[attachIndex]
-            }));
-            searchRes = searchRes.concat(amends);
-        });
-    });
-    //alert(`searchRes: ${searchRes}`);
-    // 渲染表格
-    let tbody = ``;
-    searchRes.forEach(row => {
-        tbody += `<tr>
-            <td>${row.name}</td>
-            <td>${row.manufacturer}</td>
-            <td>${row.originPrice || '暂无'}</td>
-            <td>${row.discountPrice || '暂无'}</td>
-            <td>${row.attach || '暂无'}</td>
-            </tr>`
-    });
-    //alert(`tbody: ${tbody}`);
-    document.querySelector('#tbody').innerHTML = tbody;
-})
-
-</script>
+    <button id="theme-toggle" title="切换明暗主题" aria-label="切换主题">🌙</button>
+  </div>
+</header>
+<div id="layout">
+  <nav id="sidebar"></nav>
+  <div id="sidebar-mask"></div>
+  <main id="main">
+    <article id="content"></article>
+    <footer id="pagenav"></footer>
+  </main>
+  <aside id="toc"></aside>
+</div>
+<script src="assets/vendor/marked.min.js"></script>
+<script src="assets/vendor/hljs/highlight.min.js"></script>
+<script src="assets/vendor/katex/katex.min.js"></script>
+<script src="assets/vendor/katex/auto-render.min.js"></script>
+<script src="assets/vendor/aes.min.js"></script>
+<script src="assets/vendor/sha256.min.js"></script>
+<script src="assets/js/content.js"></script>
+<script src="assets/js/content.paid.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>

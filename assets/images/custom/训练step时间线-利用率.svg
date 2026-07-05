@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 430" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect x="0" y="0" width="880" height="430" fill="#ffffff"/>
+  <text x="440" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2937">一个 5 ms 训练 step 的分解：GPU Util 与 SM Activity 差在哪</text>
+
+  <!-- 时间轴刻度: 0..5ms, x: 130 + t*140 -->
+  <g stroke="#cbd5e1" stroke-width="1">
+    <line x1="130" y1="70" x2="130" y2="300"/>
+    <line x1="270" y1="70" x2="270" y2="300"/>
+    <line x1="410" y1="70" x2="410" y2="300"/>
+    <line x1="480" y1="70" x2="480" y2="300"/>
+    <line x1="550" y1="70" x2="550" y2="300"/>
+    <line x1="690" y1="70" x2="690" y2="300"/>
+  </g>
+  <g font-size="12" fill="#64748b" text-anchor="middle">
+    <text x="130" y="318">0 ms</text>
+    <text x="270" y="318">1 ms</text>
+    <text x="410" y="318">3 ms</text>
+    <text x="480" y="318">3.5 ms</text>
+    <text x="550" y="318">4 ms</text>
+    <text x="690" y="318">5 ms</text>
+  </g>
+
+  <!-- Copy Engine 泳道 -->
+  <text x="118" y="105" text-anchor="end" font-size="13" font-weight="bold" fill="#7c3aed">DMA 拷贝引擎</text>
+  <text x="118" y="122" text-anchor="end" font-size="11" fill="#94a3b8">（不占 SM）</text>
+  <rect x="130" y="88" width="140" height="44" rx="5" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="200" y="107" text-anchor="middle" font-size="12" fill="#5b21b6">H2D 数据拷贝</text>
+  <text x="200" y="124" text-anchor="middle" font-size="11" fill="#7c3aed">0 个 SM，无 kernel</text>
+
+  <!-- SM 泳道 -->
+  <text x="118" y="205" text-anchor="end" font-size="13" font-weight="bold" fill="#047857">SM（共 108 个）</text>
+  <rect x="270" y="150" width="140" height="130" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="340" y="205" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#047857">大矩阵乘</text>
+  <text x="340" y="224" text-anchor="middle" font-size="11.5" fill="#065f46">108 个 SM 全在跑</text>
+
+  <rect x="410" y="256" width="70" height="24" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="445" y="248" text-anchor="middle" font-size="11.5" fill="#065f46">小 reduce：4 个 SM</text>
+
+  <rect x="480" y="150" width="70" height="130" rx="5" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5,4"/>
+  <text x="515" y="205" text-anchor="middle" font-size="11.5" fill="#64748b">调度</text>
+  <text x="515" y="222" text-anchor="middle" font-size="11.5" fill="#64748b">间隙</text>
+
+  <rect x="550" y="244" width="140" height="36" rx="5" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="620" y="260" text-anchor="middle" font-size="12" fill="#047857">NCCL AllReduce</text>
+  <text x="620" y="275" text-anchor="middle" font-size="11" fill="#065f46">~30 个 SM</text>
+
+  <!-- 结论区 -->
+  <g>
+    <rect x="60" y="340" width="370" height="74" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="76" y="364" font-size="13.5" font-weight="bold" fill="#1d4ed8">GPU Util ≈ 70%</text>
+    <text x="76" y="384" font-size="12" fill="#334155">有 kernel 的时间 = 2 + 0.5 + 1 = 3.5 ms</text>
+    <text x="76" y="402" font-size="12" fill="#334155">拷贝（DMA）与调度间隙没有 kernel 在跑</text>
+
+    <rect x="450" y="340" width="370" height="74" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="466" y="364" font-size="13.5" font-weight="bold" fill="#047857">SM Activity ≈ 46%（按时长加权）</text>
+    <text x="466" y="384" font-size="12" fill="#334155">(2×108 + 0.5×4 + 1×30) / (5×108)</text>
+    <text x="466" y="402" font-size="12" fill="#334155">= 248 / 540 ≈ 46%，只有约一半算力被用上</text>
+  </g>
+</svg>

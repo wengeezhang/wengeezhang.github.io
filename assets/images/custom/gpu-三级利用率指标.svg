@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 420" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect x="0" y="0" width="860" height="420" fill="#ffffff"/>
+  <text x="430" y="34" text-anchor="middle" font-size="19" font-weight="bold" fill="#1f2937">三个"忙碌程度"指标：层层深入，数值依次降低</text>
+
+  <!-- GPU 卡级 -->
+  <rect x="40" y="60" width="500" height="330" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <text x="60" y="88" font-size="15" font-weight="bold" fill="#1d4ed8">GPU（整张卡）</text>
+  <text x="60" y="110" font-size="12" fill="#475569">采样窗口内有任意 kernel 在执行吗？</text>
+
+  <!-- SM 级 -->
+  <rect x="60" y="128" width="460" height="242" rx="8" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <text x="80" y="154" font-size="14" font-weight="bold" fill="#047857">SM × 108（A100）</text>
+  <text x="80" y="174" font-size="12" fill="#475569">平均有多少比例的 SM 在执行指令？</text>
+
+  <!-- SM 内部小格子示意 -->
+  <g>
+    <rect x="80" y="188" width="200" height="164" rx="6" fill="#fefce8" stroke="#eab308" stroke-width="2"/>
+    <text x="92" y="210" font-size="12.5" font-weight="bold" fill="#a16207">单个 SM 内部</text>
+    <rect x="92" y="222" width="176" height="34" rx="4" fill="#ffffff" stroke="#9ca3af"/>
+    <text x="180" y="244" text-anchor="middle" font-size="12" fill="#374151">CUDA Core × 64（FP32）</text>
+    <rect x="92" y="264" width="176" height="34" rx="4" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+    <text x="180" y="286" text-anchor="middle" font-size="12" font-weight="bold" fill="#b91c1c">Tensor Core × 4（矩阵乘）</text>
+    <rect x="92" y="306" width="176" height="34" rx="4" fill="#ffffff" stroke="#9ca3af"/>
+    <text x="180" y="328" text-anchor="middle" font-size="12" fill="#374151">寄存器 / 共享内存</text>
+  </g>
+  <!-- 更多 SM 省略号 -->
+  <rect x="296" y="188" width="100" height="164" rx="6" fill="#fefce8" stroke="#eab308" stroke-dasharray="5,4"/>
+  <text x="346" y="276" text-anchor="middle" font-size="13" fill="#a16207">SM ...</text>
+  <rect x="410" y="188" width="100" height="164" rx="6" fill="#fefce8" stroke="#eab308" stroke-dasharray="5,4"/>
+  <text x="460" y="276" text-anchor="middle" font-size="13" fill="#a16207">SM ...</text>
+
+  <!-- 右侧指标 -->
+  <g>
+    <rect x="580" y="66" width="250" height="80" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+    <text x="705" y="92" text-anchor="middle" font-size="14.5" font-weight="bold" fill="#1d4ed8">GPU Util</text>
+    <text x="705" y="112" text-anchor="middle" font-size="12" fill="#334155">"卡有没有在干活"</text>
+    <text x="705" y="132" text-anchor="middle" font-size="12" fill="#64748b">典型 95 ~ 100%，几乎总是高</text>
+    <line x1="540" y1="106" x2="580" y2="106" stroke="#3b82f6" stroke-width="2"/>
+
+    <rect x="580" y="170" width="250" height="80" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="705" y="196" text-anchor="middle" font-size="14.5" font-weight="bold" fill="#047857">SM Activity</text>
+    <text x="705" y="216" text-anchor="middle" font-size="12" fill="#334155">"计算单元是否都被用上"</text>
+    <text x="705" y="236" text-anchor="middle" font-size="12" fill="#64748b">典型 50 ~ 90%</text>
+    <line x1="520" y1="210" x2="580" y2="210" stroke="#10b981" stroke-width="2"/>
+
+    <rect x="580" y="274" width="250" height="80" rx="8" fill="#fee2e2" stroke="#ef4444" stroke-width="2"/>
+    <text x="705" y="300" text-anchor="middle" font-size="14.5" font-weight="bold" fill="#b91c1c">Tensor Core Util</text>
+    <text x="705" y="320" text-anchor="middle" font-size="12" fill="#334155">"最强单元是否真的在跑"</text>
+    <text x="705" y="340" text-anchor="middle" font-size="12" fill="#64748b">典型 20 ~ 60%</text>
+    <line x1="268" y1="281" x2="580" y2="314" stroke="#ef4444" stroke-width="2" stroke-dasharray="6,4"/>
+  </g>
+
+  <text x="705" y="392" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1f2937">GPU Util ≥ SM Activity ≥ TC Util</text>
+  <text x="705" y="410" text-anchor="middle" font-size="12" fill="#64748b">差距越大，说明这一层浪费越多</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 440" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <rect x="0" y="0" width="880" height="440" fill="#ffffff"/>
+  <text x="440" y="32" text-anchor="middle" font-size="18" font-weight="bold" fill="#1f2937">RadixAttention：radix tree 上的 token 级前缀复用（GRPO 场景）</text>
+
+  <!-- root -->
+  <rect x="350" y="60" width="180" height="44" rx="8" fill="#e0e7ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="440" y="87" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#3730a3">radix tree 根节点</text>
+
+  <!-- shared prefix node -->
+  <rect x="300" y="140" width="280" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="440" y="167" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#92400e">共享前缀：prompt（P = 500 token）</text>
+  <text x="440" y="191" text-anchor="middle" font-size="12" fill="#b45309">KV cache 只存 1 份，prefill 只算 1 次</text>
+  <line x1="440" y1="104" x2="440" y2="140" stroke="#6366f1" stroke-width="2"/>
+
+  <!-- completions -->
+  <g stroke="#f59e0b" stroke-width="2">
+    <line x1="360" y1="210" x2="150" y2="270"/>
+    <line x1="410" y1="210" x2="345" y2="270"/>
+    <line x1="470" y1="210" x2="535" y2="270"/>
+    <line x1="520" y1="210" x2="730" y2="270"/>
+  </g>
+
+  <rect x="60" y="270" width="180" height="64" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="150" y="296" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">completion 1</text>
+  <text x="150" y="318" text-anchor="middle" font-size="12" fill="#065f46">独享 KV（C = 2048）</text>
+
+  <rect x="255" y="270" width="180" height="64" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="345" y="296" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">completion 2</text>
+  <text x="345" y="318" text-anchor="middle" font-size="12" fill="#065f46">独享 KV（C = 2048）</text>
+
+  <rect x="445" y="270" width="180" height="64" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="535" y="306" text-anchor="middle" font-size="13" fill="#64748b">……</text>
+
+  <rect x="640" y="270" width="180" height="64" rx="8" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="730" y="296" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">completion 8</text>
+  <text x="730" y="318" text-anchor="middle" font-size="12" fill="#065f46">独享 KV（C = 2048）</text>
+
+  <!-- bottom note -->
+  <rect x="90" y="366" width="700" height="54" rx="8" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
+  <text x="440" y="389" text-anchor="middle" font-size="13" fill="#9a3412">按「最长公共前缀」在树上匹配，任意长度的前缀都能命中（token 级精确）；</text>
+  <text x="440" y="409" text-anchor="middle" font-size="13" fill="#9a3412">新请求先走树复用已有 KV，走不下去的部分才新建分支、新算 KV</text>
+</svg>

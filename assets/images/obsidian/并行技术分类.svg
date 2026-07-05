@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 400" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img">
+<title>大模型多卡训练技术分类</title>
+<rect x="0" y="0" width="680" height="400" fill="#ffffff"/>
+
+<rect x="20" y="38" width="640" height="178" rx="8" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="6 4"/>
+<text x="34" y="60" font-size="14" font-weight="500" fill="#2C2C2A">① 跨设备并行 — 把数据 / 模型切到多卡（解决模型状态放不下 + 扩展吞吐）</text>
+
+<text x="45" y="92" font-size="12" fill="#5F5E5A">切数据 · data parallel</text>
+<rect x="40" y="100" width="205" height="45" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text x="142" y="120" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">DDP</text>
+<text x="142" y="137" text-anchor="middle" font-size="12" fill="#185FA5">复制整个模型，只切 batch</text>
+<rect x="40" y="152" width="205" height="48" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text x="142" y="173" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">FSDP / ZeRO</text>
+<text x="142" y="190" text-anchor="middle" font-size="12" fill="#185FA5">分片模型状态，省显存</text>
+
+<text x="270" y="92" font-size="12" fill="#5F5E5A">切张量 · 层内</text>
+<rect x="265" y="100" width="175" height="100" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text x="352" y="130" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">TP 张量并行</text>
+<text x="352" y="152" text-anchor="middle" font-size="12" fill="#185FA5">切单层权重矩阵</text>
+<text x="352" y="172" text-anchor="middle" font-size="12" fill="#185FA5">通信重·限节点内</text>
+
+<text x="465" y="92" font-size="12" fill="#5F5E5A">切流水 · 层间</text>
+<rect x="460" y="100" width="180" height="100" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text x="550" y="130" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">PP 流水线并行</text>
+<text x="550" y="152" text-anchor="middle" font-size="12" fill="#185FA5">按层切成多段</text>
+<text x="550" y="172" text-anchor="middle" font-size="12" fill="#185FA5">通信轻·可跨节点</text>
+
+<rect x="20" y="236" width="640" height="138" rx="8" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="6 4"/>
+<text x="34" y="258" font-size="14" font-weight="500" fill="#2C2C2A">② 单卡显存 / 算子优化 — 主攻激活值与吞吐（不切到多卡）</text>
+
+<rect x="40" y="278" width="195" height="78" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.8"/>
+<text x="137" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#4A1B0C">激活重计算</text>
+<text x="137" y="332" text-anchor="middle" font-size="12" fill="#993C1D">用计算换激活显存</text>
+<rect x="245" y="278" width="195" height="78" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.8"/>
+<text x="342" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#4A1B0C">FlashAttention</text>
+<text x="342" y="332" text-anchor="middle" font-size="12" fill="#993C1D">免存 O(n²) 注意力矩阵</text>
+<rect x="450" y="278" width="190" height="78" rx="6" fill="#FAECE7" stroke="#993C1D" stroke-width="0.8"/>
+<text x="545" y="312" text-anchor="middle" font-size="14" font-weight="500" fill="#4A1B0C">Liger Kernel</text>
+<text x="545" y="332" text-anchor="middle" font-size="12" fill="#993C1D">融合算子·省显存提速</text>
+</svg>

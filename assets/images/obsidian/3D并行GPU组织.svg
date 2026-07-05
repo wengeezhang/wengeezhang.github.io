@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" viewBox="0 0 680 300" font-family="-apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img">
+<title>3D 并行的 GPU 组织方式</title>
+<rect x="0" y="0" width="680" height="300" fill="#ffffff"/>
+
+<rect x="40" y="55" width="250" height="170" rx="8" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="6 4"/>
+<text x="50" y="48" font-size="12" fill="#5F5E5A">DP 副本 1</text>
+<rect x="390" y="55" width="250" height="170" rx="8" fill="none" stroke="#B4B2A9" stroke-width="0.8" stroke-dasharray="6 4"/>
+<text x="400" y="48" font-size="12" fill="#5F5E5A">DP 副本 2</text>
+
+<g fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"><rect x="55" y="75" width="105" height="58" rx="6"/></g>
+<text x="107" y="100" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">S0 · T0</text><text x="107" y="118" text-anchor="middle" font-size="12" fill="#185FA5">stage0 · 半层</text>
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"><rect x="170" y="75" width="105" height="58" rx="6"/></g>
+<text x="222" y="100" text-anchor="middle" font-size="14" font-weight="500" fill="#085041">S0 · T1</text><text x="222" y="118" text-anchor="middle" font-size="12" fill="#0F6E56">stage0 · 半层</text>
+<g fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"><rect x="55" y="150" width="105" height="58" rx="6"/></g>
+<text x="107" y="175" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">S1 · T0</text><text x="107" y="193" text-anchor="middle" font-size="12" fill="#185FA5">stage1 · 半层</text>
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"><rect x="170" y="150" width="105" height="58" rx="6"/></g>
+<text x="222" y="175" text-anchor="middle" font-size="14" font-weight="500" fill="#085041">S1 · T1</text><text x="222" y="193" text-anchor="middle" font-size="12" fill="#0F6E56">stage1 · 半层</text>
+
+<g fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"><rect x="405" y="75" width="105" height="58" rx="6"/></g>
+<text x="457" y="108" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">S0 · T0</text>
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"><rect x="520" y="75" width="105" height="58" rx="6"/></g>
+<text x="572" y="108" text-anchor="middle" font-size="14" font-weight="500" fill="#085041">S0 · T1</text>
+<g fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"><rect x="405" y="150" width="105" height="58" rx="6"/></g>
+<text x="457" y="183" text-anchor="middle" font-size="14" font-weight="500" fill="#0C447C">S1 · T0</text>
+<g fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"><rect x="520" y="150" width="105" height="58" rx="6"/></g>
+<text x="572" y="183" text-anchor="middle" font-size="14" font-weight="500" fill="#085041">S1 · T1</text>
+
+<text x="165" y="252" text-anchor="middle" font-size="12" fill="#5F5E5A">行内 = TP（最频繁，限节点内）</text>
+<text x="165" y="270" text-anchor="middle" font-size="12" fill="#5F5E5A">行间 = PP（点对点，可跨节点）</text>
+<text x="465" y="261" text-anchor="middle" font-size="12" fill="#5F5E5A">副本间 = DP（每步同步梯度）</text>
+<text x="340" y="292" text-anchor="middle" font-size="12" fill="#2C2C2A">本例：TP2 × PP2 × DP2 = 8 张 GPU</text>
+</svg>
