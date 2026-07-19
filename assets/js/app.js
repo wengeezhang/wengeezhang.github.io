@@ -22,6 +22,7 @@
      content.paid.js 提供 window.__PAID__（AES-256-CTR + HMAC-SHA256 密文 + 激活码 wrap 表）。
      任一有效激活码 → 派生 wrapKey → 解出主密钥 K → 解密全部付费章节。
      K 缓存在 localStorage（llmlearn.k），激活码本身不落盘。 */
+  const PROMO = !!(MANIFEST.site && MANIFEST.site.promo);   // 推广模式：全站免费、隐藏付费入口
   const PAID = window.__PAID__ || null;
   const FREE = {};
   MANIFEST.parts.forEach(p => (p.chapters || []).forEach(c => { FREE[c.id] = !!c.free; }));
@@ -220,7 +221,7 @@
     const hash = location.hash || '#/';
     const chm = /^#\/ch\/([\w-]+)/.exec(hash);
     QUIZ_SEQ = 0;
-    if (hash.startsWith('#/unlock')) renderUnlockPage(null);
+    if (hash.startsWith('#/unlock') && !PROMO) renderUnlockPage(null);
     else if (chm && CH_INDEX[chm[1]] !== undefined) {
       if (isLocked(chm[1])) renderUnlockPage(chm[1]);
       else renderChapter(chm[1]);
@@ -247,7 +248,8 @@
     h += '<span class="badge">📚 ' + MANIFEST.parts.length + ' 个部分 · ' + total + ' 章</span>';
     h += '<span class="badge">🖼 ' + nimg + ' 张图解</span>';
     h += '<span class="badge">📝 ' + nquiz + ' 组测验</span>';
-    if (!UNLOCKED) h += '<span class="badge free-badge">🆓 ' + ORDER.filter(c => FREE[c.id]).length + ' 章免费试读</span>';
+    if (!UNLOCKED && !PROMO) h += '<span class="badge free-badge">🆓 ' + ORDER.filter(c => FREE[c.id]).length + ' 章免费试读</span>';
+    if (PROMO) h += '<span class="badge free-badge">🎁 限时全站免费</span>';
     h += '</div>';
     if (next) h += '<p style="margin-top:22px"><a class="quiz-check" style="text-decoration:none;padding:10px 30px;font-size:15px" href="#/ch/' + next.id + '">' + (ndone ? '▶ 继续学习：' + escapeHtml(next.title) : '🚀 开始学习') + '</a></p>';
     h += '</div>';
@@ -257,7 +259,9 @@
     h += '<div class="stat"><div class="st-num">' + ndone + '/' + total + '</div><div class="st-label">已完成章节</div></div>';
     h += '</div>';
 
-    if (!UNLOCKED) {
+    if (PROMO) {
+      h += '<div class="unlock-banner"><div><b>🎁 限时全站免费开放</b><span> · 全部 ' + ORDER.length + ' 章内容均可阅读，欢迎学习与分享</span></div></div>';
+    } else if (!UNLOCKED) {
       h += '<div class="unlock-banner"><div><b>🔓 解锁完整版</b><span> · 其余 ' + ORDER.filter(c => !FREE[c.id]).length + ' 章硬核内容（GRPO 逐行拆解 / verl 全 8 章 / DeepSeek 精读 / CUDA）</span></div>' +
         '<a class="buy-btn sm" href="#/unlock">¥' + escapeHtml(String(MANIFEST.site.price || '')) + ' 解锁</a></div>';
     }
@@ -506,9 +510,11 @@
 
     let h = '<div class="side-progress"><div class="sp-nums"><span>学习进度</span><span>' + ndone + ' / ' + total + '</span></div>' +
       '<div class="sp-bar"><div style="width:' + (ndone / total * 100) + '%"></div></div>' +
-      (UNLOCKED
-        ? '<div class="sp-unlock ok">✓ 完整版已解锁</div>'
-        : '<a class="sp-unlock" href="#/unlock">🔓 解锁完整版 ¥' + escapeHtml(String(MANIFEST.site.price || '')) + '</a>') +
+      (PROMO
+        ? ''
+        : (UNLOCKED
+          ? '<div class="sp-unlock ok">✓ 完整版已解锁</div>'
+          : '<a class="sp-unlock" href="#/unlock">🔓 解锁完整版 ¥' + escapeHtml(String(MANIFEST.site.price || '')) + '</a>')) +
       '</div>';
 
     MANIFEST.parts.forEach((p, pi) => {
